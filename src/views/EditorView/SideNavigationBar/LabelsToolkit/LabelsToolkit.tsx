@@ -19,6 +19,7 @@ import {ContextType} from "../../../../data/enums/ContextType";
 import {EventType} from "../../../../data/enums/EventType";
 import LineLabelsList from "../LineLabelsList/LineLabelsList";
 import TagLabelsList from "../TagLabelsList/TagLabelsList";
+import {ImageActions} from '../../../../logic/actions/ImageActions';
 
 interface IProps {
     activeImageIndex:number,
@@ -128,11 +129,24 @@ class LabelsToolkit extends React.Component<IProps, IState> {
                     </div>
                 </div>;
 
+            const clickHandler = (e) => {
+                if (e.nativeEvent.button === 0) {
+                    ImageActions.getNextImage();
+                }
+            };
+
+            const keyHandler = (e) => {
+                // tslint:disable-next-line:no-console
+                console.log(e.key);
+            }
+
             const content =
                 <div
                     key={"Content_" + index}
                     className={getClassName("Content")}
                     style={{height: isActive ? activeTabContentHeight : 0}}
+                    onClick={clickHandler}
+                    /* onKeyUp={keyHandler} */
                 >
                     {labelType === LabelType.RECT && <RectLabelsList
                         size={{

@@ -7,6 +7,7 @@ import {EditorContext} from "./EditorContext";
 import {PopupContext} from "./PopupContext";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
 import {EventType} from "../../data/enums/EventType";
+import {ImageActions} from '../actions/ImageActions';
 
 export class ContextManager {
     private static activeCombo: string[] = [];
@@ -21,6 +22,10 @@ export class ContextManager {
         window.addEventListener(EventType.KEY_DOWN, ContextManager.onDown);
         window.addEventListener(EventType.KEY_UP, ContextManager.onUp);
         window.addEventListener(EventType.FOCUS, ContextManager.onFocus);
+        window.addEventListener("contextmenu", e => {
+            e.preventDefault();
+            ImageActions.getPreviousImage();
+        });
     }
 
     public static switchCtx(context: ContextType): void {

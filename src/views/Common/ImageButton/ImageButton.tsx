@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {ISize} from "../../../interfaces/ISize";
+import {ISize} from '../../../interfaces/ISize';
 import './ImageButton.scss';
-import classNames from "classnames";
-import {LegacyRef} from "react";
+import classNames from 'classnames';
+import {LegacyRef} from 'react';
 
 export interface ImageButtonProps extends React.HTMLProps<HTMLDivElement> {
     buttonSize:ISize,
@@ -18,10 +18,21 @@ export interface ImageButtonProps extends React.HTMLProps<HTMLDivElement> {
 }
 
 export const ImageButton = React.forwardRef((props: ImageButtonProps, ref: LegacyRef<HTMLDivElement>) => {
-    const {buttonSize, padding, image, imageAlt, href, onClick, style, isActive, isDisabled, externalClassName} = props;
+    const {
+        buttonSize,
+        padding,
+        image,
+        imageAlt,
+        href,
+        onClick,
+        style,
+        isActive,
+        isDisabled,
+        externalClassName
+    } = props;
     const imagePadding:number = !!padding ? padding : 10;
 
-    const onClickHandler = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const onClickHandler = (event: React.MouseEvent<HTMLDivElement,  MouseEvent>) => {
         event.stopPropagation();
         !!onClick && onClick();
     };
@@ -47,7 +58,7 @@ export const ImageButton = React.forwardRef((props: ImageButtonProps, ref: Legac
             }
         );
     };
-    
+
     return(
         <div
             className={getClassName()}
