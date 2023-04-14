@@ -38,17 +38,28 @@ const TagLabelsList: React.FC<IProps> = (
     };
 
     const onTagClick = (labelId: string)  => {
-        if (imageData.labelNameIds.includes(labelId)) {
+        updateImageDataById(imageData.id, {
+            ...imageData,
+            labelNameIds: remove(imageData.labelNameIds, (element: string) => element !== labelId)
+        });
+        updateImageDataById(imageData.id, {
+            ...imageData,
+            labelNameIds: imageData.labelNameIds.concat(labelId)
+        });
+
+        /*
+        if (imageData.labelNameIds.includes(labelId)) { // remove
             updateImageDataById(imageData.id, {
                 ...imageData,
                 labelNameIds: remove(imageData.labelNameIds, (element: string) => element !== labelId)
             })
-        } else {
+        } else { // newly added
             updateImageDataById(imageData.id, {
                 ...imageData,
                 labelNameIds: imageData.labelNameIds.concat(labelId)
             })
         }
+        */
     }
 
     const getClassName = (labelId: string) => {
