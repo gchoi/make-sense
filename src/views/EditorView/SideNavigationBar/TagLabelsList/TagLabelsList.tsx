@@ -1,6 +1,6 @@
 import {ISize} from "../../../../interfaces/ISize";
 import {ImageData, LabelName} from "../../../../store/labels/types";
-import React from "react";
+import React, {useEffect, useCallback} from "react";
 import Scrollbars from "react-custom-scrollbars-2";
 import {updateImageDataById} from "../../../../store/labels/actionCreators";
 import {AppState} from "../../../../store";
@@ -11,6 +11,9 @@ import classNames from "classnames";
 import {ImageButton} from "../../../Common/ImageButton/ImageButton";
 import {PopupWindowType} from "../../../../data/enums/PopupWindowType";
 import {updateActivePopupType} from "../../../../store/general/actionCreators";
+import {EventType} from "../../../../data/enums/EventType";
+import {ImageActions} from "../../../../logic/actions/ImageActions";
+
 interface IProps {
     size: ISize;
     imageData: ImageData;
@@ -27,6 +30,41 @@ const TagLabelsList: React.FC<IProps> = (
         labelNames,
         updateActivePopupType
     }) => {
+
+    const keyPress = useCallback(
+        (e) => {
+            let labelId: string = '';
+
+            if (e.keyCode === 49) {
+                if (labelNames[0]) {
+                    labelId = labelNames[0].id;
+                }
+            } else if (e.keyCode === 50) {
+                if (labelNames[1]) {
+                    labelId = labelNames[1].id;
+                }
+            } else {
+                return;
+            }
+
+            updateImageDataById(imageData.id, {
+                ...imageData,
+                labelNameIds: remove(imageData.labelNameIds, (element: string) => element !== labelId)
+            });
+            updateImageDataById(imageData.id, {
+                ...imageData,
+                labelNameIds: imageData.labelNameIds.concat(labelId)
+            });
+
+            ImageActions.getNextImage();
+        }
+    );
+    useEffect(() => {
+        window.addEventListener(EventType.KEY_DOWN, keyPress);
+        return () => window.removeEventListener(EventType.KEY_DOWN, keyPress);
+        }, [keyPress]
+    );
+
     const labelInputFieldHeight = 40;
     const listStyle: React.CSSProperties = {
         width: size.width,
@@ -82,6 +120,7 @@ const TagLabelsList: React.FC<IProps> = (
                     className={getClassName(labelName.id)}
                     onClickCapture={() => onTagClick(labelName.id)}
                     key={labelName.id}
+                    id={labelName.id}
                 >
                     {labelName.name}
                 </div>
