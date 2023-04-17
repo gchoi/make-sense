@@ -51,9 +51,15 @@ const TagLabelsList: React.FC<IProps> = (
                 ...imageData,
                 labelNameIds: remove(imageData.labelNameIds, (element: string) => element !== labelId)
             });
+            /*
             updateImageDataById(imageData.id, {
                 ...imageData,
                 labelNameIds: imageData.labelNameIds.concat(labelId)
+            });
+            */
+            updateImageDataById(imageData.id, {
+                ...imageData,
+                labelNameIds: [labelId]
             });
 
             ImageActions.getNextImage();
